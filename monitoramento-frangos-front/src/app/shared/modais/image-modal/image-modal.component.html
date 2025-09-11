@@ -1,0 +1,156 @@
+<div class="flex justify-between items-center">
+  <h2 mat-dialog-title>Imagem Modal Treinamento</h2>
+  <button mat-icon-button mat-dialog-close class="flex justify-center mr-2">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="flex flex-col items-center pt-4">
+  <div class="image-wrapper p-1" >
+    <img [src]="data.imagem" alt="Imagem ampliada" (click)="registrarClique($event)"/>
+      @if(pontos.length > 0){
+        @for(ponto of pontos; track $index){
+          <div
+            class="absolute w-4 h-4 bg-blue-800 rounded-full transform -translate-x-1/2 -translate-y-1/2"
+            [style.left.px]="ponto.x"
+            [style.top.px]="ponto.y"
+          >
+            <span class="text-white text-xs absolute -top-5 left-1/2 transform -translate-x-1/2">{{ $index + 1 }}</span>
+          </div>
+        }
+      }
+      @if(pontos.length === 4){
+        <svg class="overlay">
+          <polygon
+            [attr.points]="pontosComoString"
+            style="fill: rgba(0, 123, 255, 0.2); stroke: #007bff; stroke-width: 2;"
+          />
+        </svg>
+      }
+
+      @if(mostrarFormulario){
+        <div class="p-4">
+          <form>
+            <mat-form-field appearance="outline" class="w-full mt-4">
+              <mat-label>Informações</mat-label>
+              <mat-chip-grid required #chipGrid aria-label="informacao selection">
+                @for (informacao of informacoes(); track $index) {
+                  <mat-chip-row (removed)="remove(informacao)">
+                    {{informacao}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + informacao">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                }
+              </mat-chip-grid>
+              <input
+                name="currentInformacao"
+                placeholder="Digite aqui a informação"
+                required
+                #informacaoInput
+                [(ngModel)]="currentInformacao"
+                [ngModelOptions]="{standalone: true}"
+                [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)"
+              />
+              <button
+                type="button"
+                mat-raised-button
+                class="sm:hidden mini-button"
+                (click)="addManual()"
+              > + Adicionar
+              </button>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); informacaoInput.value = ''">
+                @for (informacao of filteredInformacoes(); track informacao) {
+                  <mat-option [value]="informacao">{{informacao}}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+            <div class="flex flex-col md:flex-row gap-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Data da Imagem</mat-label>
+                <input matInput [matDatepicker]="picker" [formControl]="date" required>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Idade do Frango (dias)</mat-label>
+                <input matInput type="number" [(ngModel)]="idadeFrango" [ngModelOptions]="{standalone: true}" min="0" max="40" required (keydown)="onlyNumberAllowed($event)" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Peso Aprox. em Gramas</mat-label>
+                <input matInput type="number" [(ngModel)]="pesoFrango" [ngModelOptions]="{standalone: true}" min="0" max="5000" required (keydown)="onlyNumberAllowed($event)" />
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="w-full mt-1">
+              <mat-label >Detalhes extras</mat-label>
+              <textarea [(ngModel)]="observacao" [ngModelOptions]="{standalone: true}" matInput rows="1"></textarea>
+            </mat-form-field>
+          </form>
+          <div class="flex justify-start">
+            <span class="text-xs text-gray-500">
+              Por favor, informe o comportamento que está ocorrendo e, se possível, forneça a data da captura da imagem, a idade do frango e o peso aproximado.
+              <br>
+              A área válida são os pontos selecionados; caso a área fique distorcida, não há problema.
+            </span>
+          </div>
+          <div class="flex justify-end gap-2 mt-2">
+            <button mat-raised-button color="warn" (click)="cancelarObservacao()">
+              <mat-icon>delete</mat-icon>Cancelar
+            </button>
+            <button mat-raised-button color="primary" (click)="salvarObservacao()">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+        </div>
+      }
+  </div>
+
+</div>
+@if(observacoesSalvas.length > 0){
+  <div class="m-8">
+    <mat-label >Observações</mat-label>
+    <div *ngFor="let item of observacoesSalvas">
+      <p><strong>Pontos: </strong> {{ item.pontos | json }}</p>
+      <p><strong>Informações: </strong>{{ item.infos || 'Não preenchido' }}</p>
+      <p><strong>Data da Imagem: </strong>{{ item.data | date: 'dd/MM/YYYY' }}</p>
+      <p><strong>Idade do Frango (semanas): </strong>{{ item.idade || 'Não preenchido' }}</p>
+      <p><strong>Peso Aprox. em Gramas: </strong>{{ item.peso || 'Não preenchido' }}</p>
+      <p><strong>Detalhes extras: </strong>{{ item.texto || 'Não preenchido' }}</p>
+      <hr />
+    </div>
+    <div class="flex justify-end gap-2 mt-2">
+      <button mat-raised-button mat-dialog-close color="warn">
+        <mat-icon>close</mat-icon>Cancelar
+      </button>
+      <button mat-raised-button color="primary" (click)="save()">
+        <mat-icon>save</mat-icon>Salvar
+      </button>
+    </div>
+  </div>
+}
+
+@if(carregando){
+  <div class="loading-overlay">
+    <div class="loading-content">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Processando... isso pode levar alguns minutos</p>
+    </div>
+  </div>
+}
+@if(requestError){
+  <div class="loading-overlay">
+    <div class="loading-content">
+      <p class="text-red-600 text-xl">Algo deu Errado!</p>
+    </div>
+  </div>
+}
+@if(requestValid){
+  <div class="loading-overlay">
+    <div class="loading-content">
+      <p class="text-green-600 text-xl">Salvo com sucesso</p>
+    </div>
+  </div>
+}

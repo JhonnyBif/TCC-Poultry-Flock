@@ -1,0 +1,66 @@
+# See https:/docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/monitoramento-frangos-front/dist
+/monitoramento-frangos-front/tmp
+/monitoramento-frangos-front/out-tsc
+/monitoramento-frangos-front/bazel-out
+
+# Node
+/monitoramento-frangos-front/node_modules
+/monitoramento-frangos-front/npm-debug.log
+/monitoramento-frangos-front/yarn-error.log
+
+# IDEs and editors
+/monitoramento-frangos-front/.idea/
+/monitoramento-frangos-front/.project
+/monitoramento-frangos-front/.classpath
+/monitoramento-frangos-front/.c9/
+/monitoramento-frangos-front/*.launch
+/monitoramento-frangos-front/.settings/
+/monitoramento-frangos-front/*.sublime-workspace
+
+# Visual Studio Code
+/monitoramento-frangos-front/.vscode
+/monitoramento-frangos-front/!.vscode/settings.json
+/monitoramento-frangos-front/!.vscode/tasks.json
+/monitoramento-frangos-front/!.vscode/launch.json
+/monitoramento-frangos-front/!.vscode/extensions.json
+/monitoramento-frangos-front/.history/*
+
+# Miscellaneous
+/monitoramento-frangos-front/.angular
+/monitoramento-frangos-front/.sass-cache/
+/monitoramento-frangos-front/connect.lock
+/monitoramento-frangos-front/coverage
+/monitoramento-frangos-front/libpeerconnection.log
+/monitoramento-frangos-front/testem.log
+/monitoramento-frangos-front/typings
+
+# System files
+/monitoramento-frangos-front/.DS_Store
+/monitoramento-frangos-front/Thumbs.db
+
+#Python
+/monitoramento_frangos_back/__pycache__
+/monitoramento_frangos_back/Include
+/monitoramento_frangos_back/Lib
+/monitoramento_frangos_back/Scripts
+/monitoramento_frangos_back/venv
+/monitoramento_frangos_back/tempCodeRunnerFile.py
+/Yolo-back/tempCodeRunnerFile.py
+/Yolo-back/video/
+/Yolo-back/deteccao/tempCodeRunnerFile.py
+/Yolo-back/deteccao/tempCodeRunnerFile.py
+/Yolo-back/treinamento/yolo11l.pt
+/Yolo-back/treinamento/yolo11m.pt
+/Yolo-back/treinamento/yolo11n.pt
+/Yolo-back/treinamento/yolo11s.pt
+/Yolo-back/treinamento/yolo12m.pt
+/Yolo-back/treinamento/yolo11m-seg.pt
+/Yolo-back/treinamento/yolo11n-seg.pt
+/Yolo-back/treinamento/yolov8n.pt
+/Yolo-back/treinamento/yolov8n.pt
+/Yolo-back/data/peso
+/Yolo-back/data/quantidade
+

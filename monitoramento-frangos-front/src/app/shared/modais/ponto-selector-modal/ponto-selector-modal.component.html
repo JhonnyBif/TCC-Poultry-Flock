@@ -1,0 +1,29 @@
+<div class="flex justify-between items-center">
+  <h2 mat-dialog-title>Selecionar Pontos</h2>
+  <button mat-icon-button mat-dialog-close class="flex justify-center mr-2">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="flex justify-center items-center h-screen bg-gray-100">
+  <div class="relative">
+    <img
+      [src]="data.imagemBase64"
+      (click)="registrarClique($event)"
+      class="max-w-[95vw] sm:max-w-[70vw] max-h-[95vh] sm:max-h-[70vh] border border-gray-500"
+    />
+    @for(ponto of pontosFicticios; track $index){
+      <div
+        class="absolute w-4 h-4 bg-red-500 rounded-full transform -translate-x-1/2 -translate-y-1/2"
+        [style.left.px]="ponto.x"
+        [style.top.px]="ponto.y"
+      >
+        <span class="text-white text-xs absolute -top-5 left-1/2 transform -translate-x-1/2">{{ $index + 1 }}</span>
+      </div>
+    }
+  </div>
+</div>
+<div class="flex justify-center mt-4">
+  <button mat-raised-button color="primary" [disabled]="pontos.length !== 4"
+  (click)="enviar()">Enviar Pontos</button>
+</div>

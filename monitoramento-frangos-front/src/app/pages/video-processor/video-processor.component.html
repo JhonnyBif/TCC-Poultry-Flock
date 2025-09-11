@@ -1,0 +1,205 @@
+<div class="">
+
+  <div class="flex m-8 items-center">
+    <div class="ml-4">
+      <span class="font-bold text-xl mx-auto"> Processar</span>
+    </div>
+  </div>
+
+  <div class="flex p-4 justify-center items-center h-10 intro-y">
+
+  </div>
+
+    <div class="flex items-center flex-wrap justify-center gap-2 p-6 ">
+      <mat-card class="upload-box bg-white">
+        <div class="upload-area">
+          <ngx-file-drop
+            accept=".png, .jpeg, .jpg, .mp4"
+            [multiple]="false"
+            dropZoneLabel="Arraste os arquivos aqui"
+            [useDragEnter]="true"
+            [showBrowseBtn]="false"
+            [directory]="false"
+            (onFileDrop)="dropped($event)"
+          >
+            <ng-template
+              ngx-file-drop-content-tmp
+              let-openFileSelector="openFileSelector"
+            >
+              <div class="upload-text" (click)="openFileSelector()">
+                <mat-icon>cloud_upload</mat-icon>
+                <p>Clique ou arraste arquivos aqui</p>
+                <small>Formatos aceitos: PNG, JPG, MP4 | máx 150MB</small>
+              </div>
+            </ng-template>
+          </ngx-file-drop>
+          @if(isMobile){
+            <label class="camera-upload-btn">
+              <mat-icon>photo_camera</mat-icon>
+              Tirar foto
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                hidden
+                (change)="cameraSelected($event)"
+              />
+            </label>
+          }
+          @if(error){
+            <mat-error class="text-red-600">
+              O Tamanho do arquivo é superior a 150MB
+            </mat-error>
+          }
+        </div>
+
+        <div>
+          <mat-list>
+            <mat-list-item *ngFor="let item of files; let i = index">
+              <div class="preview-container">
+
+                <!-- IMAGEM -->
+                <img
+                  *ngIf="item.type === 'image'"
+                  [src]="item.url"
+                  alt="preview"
+                  class="thumb-preview"
+                  style="cursor: zoom-in"
+                />
+
+                <!-- VÍDEO -->
+                <div
+                  *ngIf="item.type === 'video'"
+                  class="video-thumb"
+                >
+                  <video [src]="item.url" muted></video>
+                  <mat-icon class="play-icon">play_circle</mat-icon>
+                </div>
+                <div>
+                  <p>
+                    {{ formataNomeArquivo(item.file.name) }} ({{ bytesToMegabytes(item.file.size) }})
+                    <button mat-icon-button color="warn" (click)="removeFile(i)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </p>
+
+                </div>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-card>
+
+
+      <div class="options-box">
+        <mat-radio-group [(ngModel)]="selectedOption" [ngModelOptions]="{standalone: true}" required>
+          <mat-radio-button [value]="options[0]" [disabled]="tipoArquivo === 'video'">Detectar imagem</mat-radio-button>
+          <mat-radio-button [value]="options[1]" [disabled]="tipoArquivo === 'image'">Fragmentar vídeo em imagens</mat-radio-button>
+          <mat-radio-button [value]="options[2]" [disabled]="tipoArquivo === 'image'">Detectar com vídeo</mat-radio-button>
+        </mat-radio-group>
+
+        <mat-checkbox [(ngModel)]="parteCima" [disabled]="parteBaixo || selectedOption == options[0]" [ngModelOptions]="{standalone: true}">Apenas Parte de cima</mat-checkbox>
+        <mat-checkbox [(ngModel)]="parteBaixo" [disabled]="parteCima || selectedOption == options[0]" [ngModelOptions]="{standalone: true}">Apenas Parte de baixo</mat-checkbox>
+        <button mat-raised-button color="primary" (click)="processar()">Processar vídeo ou imagem</button>
+        @if(videoError != ''){
+          <span class="text-red-500">
+              {{videoError}}
+            <br>
+            Por favor, envie um vídeo em formato MP4 com codec H.264.
+            <br>
+            Dica: utilize <a href="https://cloudconvert.com" target="_blank">CloudConvert</a> para converter o vídeo, e selecione para converter para MP4.
+          </span>
+        }
+      </div>
+    </div>
+
+
+  @if(carregando){
+    <div class="loading-overlay">
+      <div class="loading-content">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Processando... isso pode levar alguns minutos</p>
+      </div>
+    </div>
+  }
+
+  @if(requestError){
+    <div class="loading-overlay">
+      <div class="loading-content">
+        <p class="text-red-600 text-xl">Acesso inautorizado</p>
+      </div>
+    </div>
+  }
+
+  @if(noFilesError){
+    <div class="loading-overlay">
+      <div class="loading-content">
+        <p class="text-red-600 text-xl">Não há imagem/vídeo selecionado ou método de detecção não selecionado</p>
+      </div>
+    </div>
+  }
+
+</div>
+<ng-template #meuDialogTemplate>
+  <div class="p-4 mx-4">
+    <div class="flex justify-between items-center">
+      <h2 mat-dialog-title>Selecionar Pontos</h2>
+      <button mat-icon-button mat-dialog-close class="flex justify-center mb-3 mr-2">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-dialog-content class="mat-typography">
+      <div class="flex flex-col justify-center items-center gap-2" [formGroup]="medidasForm">
+        <span>Envie a medida em metros</span>
+        <span>Ex: 1.5, corresponderá a 150cm</span>
+        <img width="180" height="180" [src]="'../../../assets/images/ex_medidas.png'" alt="ex_medidas">
+        <mat-form-field>
+          <mat-label>Superior</mat-label>
+          <input matInput inputmode="decimal"(input)="onNumberInput($event)" (keydown)="preventInvalidKeys($event)" name="superior" formControlName="superior" matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Lateral Direita</mat-label>
+          <input matInput inputmode="decimal"(input)="onNumberInput($event)" (keydown)="preventInvalidKeys($event)" name="direita" formControlName="direita" matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Inferior</mat-label>
+          <input fmatInput inputmode="decimal"(input)="onNumberInput($event)" (keydown)="preventInvalidKeys($event)" name="baixo" formControlName="baixo" matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Lateral Esquerda</mat-label>
+          <input matInput inputmode="decimal"(input)="onNumberInput($event)" (keydown)="preventInvalidKeys($event)" name="esquerda" formControlName="esquerda" matInput>
+        </mat-form-field>
+          <mat-label class="text-black pt-2">Selecione para calcular aglomereção</mat-label>
+          <mat-radio-group [(ngModel)]="selectedOptionAglomeracao" [ngModelOptions]="{standalone: true}" required (change)="onOptionSelected($event)">
+            <mat-radio-button [value]="optionsAglomeracao[0]">Enviar Data de entrada dos frangos e Data do vídeo</mat-radio-button>
+            <mat-radio-button [value]="optionsAglomeracao[1]">Enviar idade dos frangos em dias</mat-radio-button>
+          </mat-radio-group>
+        @if(selectedOptionAglomeracao == optionsAglomeracao[0]){
+          <mat-form-field>
+            <mat-label>Data de entrada</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="dataEntrada">
+            <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Data do vídeo</mat-label>
+            <input matInput [min]="medidasForm.value.dataEntrada" [matDatepicker]="picker2" formControlName="dataVideo" >
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        } @else if (selectedOptionAglomeracao == optionsAglomeracao[1]) {
+          <mat-form-field>
+            <mat-label>Idade dos frangos</mat-label>
+            <input matInput inputmode="decimal"(input)="onNumberInput($event)" (keydown)="preventInvalidKeys($event)" name="idade" formControlName="idade" matInput>
+          </mat-form-field>
+        }
+      </div>
+        <span class="text-sm">Em caso de data será feito o calculo para saber os dias</span>
+        <div class="flex flex-col justify-center mt-4">
+          <span>Todos os campos são obrigatórios</span>
+          <button mat-raised-button color="primary" [disabled]="medidasForm.invalid" (click)="dialogRef.close()">Enviar Dados</button>
+        </div>
+    </mat-dialog-content>
+  </div>
+</ng-template>
+

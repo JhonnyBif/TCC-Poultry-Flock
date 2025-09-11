@@ -1,0 +1,83 @@
+<div class="flex justify-between items-center">
+  <h2 mat-dialog-title>Resultado da Análise</h2>
+  <button mat-icon-button mat-dialog-close class="flex justify-center mr-2">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="p-4">
+  @if(data.quantidade_por_metro_quadrado){
+    <div class="flex items-center justify-between">
+      <button mat-button (click)="mostrarQuantidadePorMetroQuadrado = !mostrarQuantidadePorMetroQuadrado">
+        {{
+          !mostrarQuantidadePorMetroQuadrado ? 'Clique aqui para Expandir e mostrar a Quantidade por Metro Quadrado':
+          'Clique aqui para Reduzir e ocultar a Quantidade por Metro Quadrado'
+        }}
+      </button>
+    </div>
+    @if(mostrarQuantidadePorMetroQuadrado){
+      @if(data.quantidade_por_metro_quadrado.video_base64) {
+          <video [src]="'data:video/mp4;base64,' + data.quantidade_por_metro_quadrado.video_base64" type="video/mp4" controls width="100%"></video>
+        }
+        @if(data.quantidade_por_metro_quadrado.heatmap) {
+          <video [src]="'data:video/mp4;base64,' + data.quantidade_por_metro_quadrado.heatmap" type="video/mp4" controls width="100%"></video>
+        }
+        @if(data.quantidade_por_metro_quadrado.image_base64) {
+          <div class="flex items-center justify-center flex-col">
+            <img (click)="imagemExpandida = 'data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_base64" [src]="'data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_base64" class="cursor-zoom-in" type="img/png" controls width="100%" />
+            <button mat-button (click)="abrirImagem('data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_base64)">Abrir Modal de treinamento <mat-icon>article</mat-icon></button>
+            <button mat-button (click)="downloadImage(data.quantidade_por_metro_quadrado.image_base64)">Baixar Imagem <mat-icon>download</mat-icon></button>
+          </div>
+        }
+        @if(data.quantidade_por_metro_quadrado.image_heatmap_base64){
+          <div class="flex items-center justify-center flex-col">
+            <img (click)="imagemExpandida = 'data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_heatmap_base64" [src]="'data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_heatmap_base64" class="cursor-zoom-in" type="img/png" controls width="100%" />
+            <button mat-button (click)="downloadImage(data.quantidade_por_metro_quadrado.image_heatmap_base64)">Baixar Imagem <mat-icon>download</mat-icon></button>
+          </div>
+        }
+        @if(data.quantidade_por_metro_quadrado.imagens_base64?.length) {
+          <div>
+            <h3>Imagens Processadas:</h3>
+            @for(img of data.quantidade_por_metro_quadrado.imagens_base64; track $index){
+              <div class="img-container" >
+                <div class="flex items-center justify-center flex-col">
+                  <img (click)="imagemExpandida = 'data:image/png;base64,' + img" [src]="'data:image/png;base64,' + img" alt="Frame processado" class="processed-img cursor-zoom-in" />
+                  <button mat-button (click)="abrirImagem('data:image/png;base64,' + img)">Abrir Modal de treinamento  <mat-icon>article</mat-icon></button>
+                  <button mat-button (click)="downloadImage(img)">Baixar Imagem  <mat-icon>download</mat-icon></button>
+
+                </div>
+              </div>
+            }
+          </div>
+        }
+        @if(data.quantidade_por_metro_quadrado.imagens_heatmap_base64?.length) {
+          <div>
+            <h3>Imagens Processadas:</h3>
+            @for(img of data.quantidade_por_metro_quadrado.imagens_heatmap_base64; track $index){
+              <div class="img-container" >
+                <div class="flex items-center justify-center flex-col">
+                  <img (click)="imagemExpandida = 'data:image/png;base64,' + img" [src]="'data:image/png;base64,' + img" alt="Frame processado" class="processed-img" />
+                  <button mat-button (click)="downloadImage(img)">Baixar Imagem <mat-icon>download</mat-icon></button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <h4 class="mt-4">Relatório:</h4>
+        <pre style="white-space: pre-wrap;">{{ data.quantidade_por_metro_quadrado.resultado }}</pre>
+    }
+  }
+  @if(imagemExpandida){
+    <div
+      class="fixed inset-0 z-50 bg-black bg-opacity-75 flex items-center justify-center"
+      (click)="imagemExpandida = null"
+    >
+      <img [src]="imagemExpandida" class="max-w-[95%] max-h-[95%] rounded shadow-lg" />
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fechar</button>
+</mat-dialog-actions>
