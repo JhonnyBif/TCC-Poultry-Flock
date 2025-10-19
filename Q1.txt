@@ -1,0 +1,32 @@
+Q1
+Encontrado 37:
+Falsos: 0
+Total: 79
+
+Q2 
+Encontrado: 23
+Falsos: 1
+Total: 39
+
+Q3
+Encontrado: 21
+Falsos: 0
+Total: 35
+
+Q4
+Encontrado: 7
+Falsos: 0
+Total: 17
+
+Q5
+Encontrado: 5
+Falsos: 0
+Total: 7
+
+Q6
+Encontrado: 10
+Falsos: 0
+Total: 14
+
+
+
