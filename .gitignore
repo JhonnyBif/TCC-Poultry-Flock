@@ -43,10 +43,10 @@
 
 #Python
 /monitoramento_frangos_back/__pycache__
-/monitoramento_frangos_back/Include
-/monitoramento_frangos_back/Lib
-/monitoramento_frangos_back/Scripts
+/monitoramento_frangos_back/share
+/monitoramento_frangos_back/.pytest_cache
 /monitoramento_frangos_back/venv
+/monitoramento_frangos_back/Lib
 /monitoramento_frangos_back/tempCodeRunnerFile.py
 /Yolo-back/tempCodeRunnerFile.py
 /Yolo-back/video/
