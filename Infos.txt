@@ -1,3 +1,14 @@
+				TCC
+
+	Dimensões:
+25_03 - 02_processado:
+Superior - 13
+Lateral Direita - 6.6
+Inferior - 3.8
+Lateral Esquerda - 5.1
+Idade - 30 Dias
+
+	Quadros de contagem:
 Q1
 Encontrado 37:
 Falsos: 0

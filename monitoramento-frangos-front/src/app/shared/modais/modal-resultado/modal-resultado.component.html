@@ -25,7 +25,7 @@
         @if(data.quantidade_por_metro_quadrado.image_base64) {
           <div class="flex items-center justify-center flex-col">
             <img (click)="imagemExpandida = 'data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_base64" [src]="'data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_base64" class="cursor-zoom-in" type="img/png" controls width="100%" />
-            <button mat-button (click)="abrirImagem('data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_base64)">Abrir Modal de treinamento <mat-icon>article</mat-icon></button>
+            <!-- <button mat-button (click)="abrirImagem('data:image/png;base64,' + data.quantidade_por_metro_quadrado.image_base64)">Abrir Modal de treinamento <mat-icon>article</mat-icon></button> -->
             <button mat-button (click)="downloadImage(data.quantidade_por_metro_quadrado.image_base64)">Baixar Imagem <mat-icon>download</mat-icon></button>
           </div>
         }
@@ -42,7 +42,7 @@
               <div class="img-container" >
                 <div class="flex items-center justify-center flex-col">
                   <img (click)="imagemExpandida = 'data:image/png;base64,' + img" [src]="'data:image/png;base64,' + img" alt="Frame processado" class="processed-img cursor-zoom-in" />
-                  <button mat-button (click)="abrirImagem('data:image/png;base64,' + img)">Abrir Modal de treinamento  <mat-icon>article</mat-icon></button>
+                  <!-- <button mat-button (click)="abrirImagem('data:image/png;base64,' + img)">Abrir Modal de treinamento  <mat-icon>article</mat-icon></button> -->
                   <button mat-button (click)="downloadImage(img)">Baixar Imagem  <mat-icon>download</mat-icon></button>
 
                 </div>
