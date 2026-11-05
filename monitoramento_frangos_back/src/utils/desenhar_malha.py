@@ -20,9 +20,9 @@ def desenhar_malha(frame, H_inv, contagem_por_quadrado, frame_atual, passo, altu
                 if contador_aglomeracao[chave] >= 5:
                     texto += " AGLOMERACAO"
                 pos = tuple(quad_original[0][0])
-                cv2.putText(frame, texto, (pos[0]+1, pos[1]+11), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 2)
-                cv2.putText(frame, texto, (pos[0], pos[1]+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
-            cv2.polylines(frame, [quad_original], True, (0, 255, 0), 1)
+                cv2.putText(frame, texto, (pos[0]+1, pos[1]+11), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 8)
+                cv2.putText(frame, texto, (pos[0], pos[1]+10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            cv2.polylines(frame, [quad_original], True, (0, 255, 0), 3)
             
 def desenhar_malha_img(frame, H_inv, contagem_por_quadrado, frame_count, frame_interval, passo, altura_real_px, largura_real_px, limite_aglomeracao):
     for lin in range(0, altura_real_px, passo):

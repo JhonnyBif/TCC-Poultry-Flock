@@ -1,0 +1,19 @@
+CNN = Elas são o tipo de rede usada para analisar imagens, porque conseguem identificar padrões visuais, como bordas, formas e texturas.
+O funcionamento é baseado em filtros que percorrem a imagem automaticamente, destacando o que é importante — por exemplo, o formato do frango.
+
+Homografia = Homografia é o processo que usamos para transformar a imagem em medidas reais.
+Na câmera, tudo está em perspectiva — mais longe parece menor, mais perto parece maior.
+A homografia corrige isso projetando a imagem para um plano real, como se a câmera estivesse olhando de cima.
+
+Precisão (Precision): porcentagem das detecções que realmente estavam corretas.
+
+Recall: porcentagem dos objetos reais que o modelo conseguiu encontrar.
+
+F1-Score: equilíbrio entre precisão e recall em um único número, olhar precisão ou só olhar recall pode enganar. ele só fica alto quando os dois estão bons ao mesmo tempo.
+Se o modelo acerta bastante, mas também perde muitos objetos, o F1 cai.
+
+mAP50: média da precisão do modelo considerando IoU ≥ 50% (acerto “meio certo”).
+
+mAP50-95: média da precisão usando vários níveis de IoU, de 50% até 95% (acerto “cada vez mais rigoroso”)
+
+Threshold: valor mínimo de confiança que o modelo precisa atingir para considerar uma detecção como válida.

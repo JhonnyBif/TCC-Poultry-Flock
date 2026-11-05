@@ -1,0 +1,57 @@
+Camera 3
+
+cima: 5.2	
+
+direita: 4
+
+Baixo: 4.5 
+
+esquerda: 5.3
+
+----------------------------------
+
+Camera 4
+
+cima: 7.3
+
+direita: 2.9
+
+Baixo: 5 
+
+esquerda: 2.9
+
+----------------------------------
+
+Camera 6
+
+cima: 8:30
+
+direita: 3,80
+
+Baixo: 4 metros 
+
+esquerda: 4:30
+
+----------------------------------
+
+Camera 8
+
+cima: 4.7
+
+direita: 2
+
+Baixo: 5.5 
+
+esquerda: 2.3
+
+----------------------------------
+
+Camera 10
+
+cima: 6
+
+direita: 3.2
+
+Baixo: 4.4 
+
+esquerda: 5.2
